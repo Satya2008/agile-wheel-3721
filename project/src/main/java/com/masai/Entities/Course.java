@@ -40,6 +40,12 @@ public class Course {
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Assignment> assignments;
+    
+    @OneToMany(mappedBy = "course")
+    private List<Lesson> lessons;
+
+    @OneToMany(mappedBy = "course")
+    private List<Quiz> quizzes;
 
 	public Course() {
 		super();
