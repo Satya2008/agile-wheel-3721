@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -33,107 +35,147 @@ public class Student {
     private LocalDate dateOfBirth;
     
     @Column(name = "mobile_no",nullable = false)
-    private String MobileNo;
+    private String mobileNo;
 
-    @ManyToMany(mappedBy = "students")
+//    @ManyToMany(mappedBy = "students")
+//    private List<Course> courses;
+    @ManyToMany
+    @JoinTable(
+        name = "student_course",
+        joinColumns = @JoinColumn(name = "student_id"),
+        inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
     private List<Course> courses;
-
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<Enrollment> enrollments;
+    
+    @Column(name = "lecture_access_count")
+    private int lectureAccessCount;
+    
+    @Column(name = "reading_access_count")
+    private int readingAccessCount;
+    
+    @Column(name = "video_access_count")
+    private int videoAccessCount;
+    @OneToMany(mappedBy = "student")
+    private List<Assignment> assignments;
+    
+
+    public List<Assignment> getAssignments() {
+		return assignments;
+	}
+
+	public void setAssignments(List<Assignment> assignments) {
+		this.assignments = assignments;
+	}
 
 	public Student() {
-		super();
-		
-	}
+        super();
+    }
 
-	public Student( String username, String password, String name, LocalDate dateOfBirth, String mobileNo,
-			List<Course> courses, List<Enrollment> enrollments) {
-		super();
-	
-		this.username = username;
-		this.password = password;
-		this.name = name;
-		this.dateOfBirth = dateOfBirth;
-		MobileNo = mobileNo;
-		this.courses = courses;
-		this.enrollments = enrollments;
-	}
+    public Student(String username, String password, String name, LocalDate dateOfBirth, String mobileNo,
+            List<Course> courses, List<Enrollment> enrollments, int lectureAccessCount, int readingAccessCount,
+            int videoAccessCount) {
+        super();
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.mobileNo = mobileNo;
+        this.courses = courses;
+        this.enrollments = enrollments;
+        this.lectureAccessCount = lectureAccessCount;
+        this.readingAccessCount = readingAccessCount;
+        this.videoAccessCount = videoAccessCount;
+    }
 
-	public int getId() {
-		return id;
-	}
+    // Getters and setters
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public LocalDate getDateOfBirth() {
-		return dateOfBirth;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setDateOfBirth(LocalDate dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
 
-	public String getMobileNo() {
-		return MobileNo;
-	}
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 
-	public void setMobileNo(String mobileNo) {
-		MobileNo = mobileNo;
-	}
+    public String getMobileNo() {
+        return mobileNo;
+    }
 
-	public List<Course> getCourses() {
-		return courses;
-	}
+    public void setMobileNo(String mobileNo) {
+        this.mobileNo = mobileNo;
+    }
 
-	public void setCourses(List<Course> courses) {
-		this.courses = courses;
-	}
+    public List<Course> getCourses() {
+        return courses;
+    }
 
-	public List<Enrollment> getEnrollments() {
-		return enrollments;
-	}
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
 
-	public void setEnrollments(List<Enrollment> enrollments) {
-		this.enrollments = enrollments;
-	}
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
 
-	@Override
-	public String toString() {
-		return "Student [id=" + id + ", username=" + username + ", password=" + password + ", name=" + name
-				+ ", dateOfBirth=" + dateOfBirth + ", MobileNo=" + MobileNo + ", courses=" + courses + ", enrollments="
-				+ enrollments + "]";
-	}
-  
-	
-  
-	
+    public void setEnrollments(List<Enrollment> enrollments) {
+        this.enrollments = enrollments;
+    }
+
+    public int getLectureAccessCount() {
+        return lectureAccessCount;
+    }
+
+    public void setLectureAccessCount(int lectureAccessCount) {
+        this.lectureAccessCount = lectureAccessCount;
+    }
+
+    public int getReadingAccessCount() {
+        return readingAccessCount;
+    }
+
+    public void setReadingAccessCount(int readingAccessCount) {
+        this.readingAccessCount = readingAccessCount;
+    }
+
+    public int getVideoAccessCount() {
+        return videoAccessCount;
+    }
+
+    public void setVideoAccessCount(int videoAccessCount) {
+        this.videoAccessCount = videoAccessCount;
+    }
 }
-
-   
-

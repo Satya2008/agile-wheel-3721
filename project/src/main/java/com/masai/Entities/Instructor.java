@@ -1,8 +1,9 @@
 package com.masai.Entities;
-
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,24 +32,25 @@ public class Instructor {
     private LocalDate dateOfBirth;
     
     @Column(nullable = false)
-    private String Mobile_No;
-    
-    @OneToMany(mappedBy = "instructor")
-    private List<Course> courses;
+    private String mobileNo;
+
+    @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
+    private List<Course> courses = new ArrayList<>();
 
 	public Instructor() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Instructor(String username, String password, String name, LocalDate dateOfBirth, String mobile_No,
+	public Instructor( String username, String password, String name, LocalDate dateOfBirth, String mobileNo,
 			List<Course> courses) {
 		super();
+	
 		this.username = username;
 		this.password = password;
 		this.name = name;
 		this.dateOfBirth = dateOfBirth;
-		Mobile_No = mobile_No;
+		this.mobileNo = mobileNo;
 		this.courses = courses;
 	}
 
@@ -56,10 +58,7 @@ public class Instructor {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
+	
 	public String getUsername() {
 		return username;
 	}
@@ -92,12 +91,12 @@ public class Instructor {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public String getMobile_No() {
-		return Mobile_No;
+	public String getMobileNo() {
+		return mobileNo;
 	}
 
-	public void setMobile_No(String mobile_No) {
-		Mobile_No = mobile_No;
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
 	}
 
 	public List<Course> getCourses() {
@@ -111,9 +110,10 @@ public class Instructor {
 	@Override
 	public String toString() {
 		return "Instructor [id=" + id + ", username=" + username + ", password=" + password + ", name=" + name
-				+ ", dateOfBirth=" + dateOfBirth + ", Mobile_No=" + Mobile_No + ", courses=" + courses + "]";
+				+ ", dateOfBirth=" + dateOfBirth + ", mobileNo=" + mobileNo + ", courses=" + courses + "]";
 	}
 
-	
-    
+  
+
+  
 }

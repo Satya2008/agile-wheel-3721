@@ -1,10 +1,16 @@
 package com.masai.Dao;
 
+import com.masai.EMUtils.Utils;
+
+import jakarta.persistence.EntityManager;
+
 public class AdministratorDaoImpl implements IAdministratorDao {
 
 	@Override
 	public void login(String username, String password) {
-		// TODO Auto-generated method stub
+//		EntityManager em = null;
+//		em = Utils.getEntityManager();
+		
 		
 	}
 
