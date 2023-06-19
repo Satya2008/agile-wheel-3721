@@ -26,8 +26,20 @@ public class Assignment {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
+    
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private Student student;
 
-    @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL)
+    public Student getStudent() {
+		return student;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
+
+	@OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL)
     private List<Grade> grades;
 
 	public Assignment() {

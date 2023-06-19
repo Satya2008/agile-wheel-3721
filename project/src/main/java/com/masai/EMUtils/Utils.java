@@ -10,7 +10,7 @@ public class Utils {
 	
 	
 	static  {
-		emf = Persistence.createEntityManagerFactory("employee");
+		emf = Persistence.createEntityManagerFactory("project");
 	
 	}
 	static public EntityManager getEntityManager() {

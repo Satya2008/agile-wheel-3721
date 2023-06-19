@@ -1,10 +1,14 @@
 package com.masai.Services;
 
+import com.masai.Dao.AdministratorDaoImpl;
+import com.masai.Dao.IAdministratorDao;
+
 public class AdministratorServiceImpl implements IAdministratorService {
 
 	@Override
 	public void login(String username, String password) {
-		// TODO Auto-generated method stub
+		IAdministratorDao ad = new AdministratorDaoImpl();
+		ad.login(username, password);
 
 	}
 
