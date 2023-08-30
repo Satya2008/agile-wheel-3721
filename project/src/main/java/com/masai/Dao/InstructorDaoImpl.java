@@ -115,11 +115,39 @@ public class InstructorDaoImpl implements IInstructorDao {
 
 
 
-	@Override
-	public void updateCourse(Course course) throws SomethingWentWrongException, NoRecordFoundException {
-		// TODO Auto-generated method stub
-		
-	}
+	  @Override
+	  public void updateCourse(Course course, int instructorId) throws SomethingWentWrongException, NoRecordFoundException {
+	      EntityManager em = Utils.getEntityManager();
+	      EntityTransaction et = em.getTransaction();
+
+	      try {
+	          et.begin();
+
+	          // Check if the course exists in the database
+	          Course existingCourse = em.find(Course.class, course.getId());
+	          if (existingCourse == null) {
+	              throw new NoRecordFoundException("Course not found");
+	          }
+	          Instructor existingIns = em.find(Instructor.class, instructorId);
+	          if (existingIns == null) {
+	              throw new NoRecordFoundException("Instructor not found");
+	          }
+
+	          // Update the course properties
+	          existingCourse.setName(course.getName());
+	          existingCourse.setInstructor(existingIns);
+	          et.commit();
+	      } catch (NoRecordFoundException e) {
+	          et.rollback();
+	          throw e;
+	      } catch (Exception e) {
+	          et.rollback();
+	          throw new SomethingWentWrongException("Failed to update the course");
+	      } finally {
+	          em.close();
+	      }
+	  }
+
 
 	@Override
 	public void deleteCourse(Course course) throws SomethingWentWrongException, NoRecordFoundException {
@@ -205,6 +233,12 @@ public class InstructorDaoImpl implements IInstructorDao {
 
 	@Override
 	public void logout() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateCourse(Course course) throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		
 	}

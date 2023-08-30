@@ -136,7 +136,6 @@ public class StudentsDaoImpl implements IStudentDao {
                     System.out.println("Assignment ID: " + assignment.getId());
                     System.out.println("Assignment Name: " + assignment.getName());
                     
-                    // Add more assignment details as needed
                     System.out.println("------------------------");
                 }
             }

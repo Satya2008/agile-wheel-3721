@@ -62,10 +62,12 @@ public class InstructorServiceImpl implements IInstructorService {
 		ins.createCourse(course);
 		
 	}
-
 	@Override
-	public void updateCourse(Course course) throws SomethingWentWrongException, NoRecordFoundException {
-		// TODO Auto-generated method stub
+	public void updateCourse(Course course, int instructorId)
+			throws SomethingWentWrongException, NoRecordFoundException {
+		IInstructorDao ins = new InstructorDaoImpl();
+		ins.updateCourse(course);
+		System.out.println("Updated successfully!..");
 		
 	}
 
@@ -151,6 +153,8 @@ public class InstructorServiceImpl implements IInstructorService {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 
 	
 }

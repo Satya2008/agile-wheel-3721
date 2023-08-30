@@ -24,7 +24,7 @@ public interface IInstructorService {
 
     void createCourse(Course course) throws SomethingWentWrongException;
 
-    void updateCourse(Course course) throws SomethingWentWrongException, NoRecordFoundException;
+    void updateCourse(Course course, int instructorId) throws SomethingWentWrongException, NoRecordFoundException;
 
     void deleteCourse(Course course) throws SomethingWentWrongException, NoRecordFoundException;
 

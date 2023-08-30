@@ -1,9 +1,5 @@
 package com.masai.Dao;
 
-import com.masai.EMUtils.Utils;
-
-import jakarta.persistence.EntityManager;
-
 public class AdministratorDaoImpl implements IAdministratorDao {
 
 	@Override

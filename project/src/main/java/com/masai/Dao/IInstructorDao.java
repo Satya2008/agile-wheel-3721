@@ -30,8 +30,10 @@ public interface IInstructorDao {
 
     void createAssignment(Assignment assignment, Course course) throws SomethingWentWrongException;
 
+    void updateCourse(Course course, int instructorId) throws SomethingWentWrongException, NoRecordFoundException;
+   
     void updateAssignment(Assignment assignment) throws SomethingWentWrongException, NoRecordFoundException;
-
+    
     void deleteAssignment(Assignment assignment) throws SomethingWentWrongException, NoRecordFoundException;
 
     List<Grade> getGradesByAssignment(Assignment assignment);
@@ -55,4 +57,8 @@ public interface IInstructorDao {
 //    void deleteDiscussionPost(DiscussionPost post) throws SomethingWentWrongException, NoRecordFoundException;
 
     void logout();
+
+	
+
+	
 }
