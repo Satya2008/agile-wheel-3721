@@ -17,36 +17,35 @@ public interface IInstructorDao {
 
     Instructor login(String username, String password) throws NoRecordFoundException;
 
-    List<Course> getCoursesByInstructor(Instructor instructor);
+    List<Course> getCoursesByInstructorId(int instructor)throws SomethingWentWrongException;
     
 
-    void createCourse(Course course) throws SomethingWentWrongException;
+    void createCourse(Course course, int instructorId) throws SomethingWentWrongException;
 
-    void updateCourse(Course course) throws SomethingWentWrongException, NoRecordFoundException;
+    void updateCourse(Course course,int courseId ,int instructorId) throws SomethingWentWrongException, NoRecordFoundException;
 
-    void deleteCourse(Course course) throws SomethingWentWrongException, NoRecordFoundException;
+    void deleteCourse(int couseId) throws SomethingWentWrongException, NoRecordFoundException;
 
-    List<Assignment> getAssignmentsByCourse(Course course);
+    List<Assignment> getAssignmentsByCourseId(int courseId) throws SomethingWentWrongException;
 
-    void createAssignment(Assignment assignment, Course course) throws SomethingWentWrongException;
+    void createAssignment(Assignment assignment, int courseId, int studentId) throws SomethingWentWrongException;
 
-    void updateCourse(Course course, int instructorId) throws SomethingWentWrongException, NoRecordFoundException;
    
-    void updateAssignment(Assignment assignment) throws SomethingWentWrongException, NoRecordFoundException;
+    void updateAssignment(Assignment assignment, int assignmentId, int courseId, int studentId) throws SomethingWentWrongException, NoRecordFoundException;
     
-    void deleteAssignment(Assignment assignment) throws SomethingWentWrongException, NoRecordFoundException;
+    void deleteAssignment(int assignmentId) throws SomethingWentWrongException, NoRecordFoundException;
 
-    List<Grade> getGradesByAssignment(Assignment assignment);
+    List<Grade> getGradesByAssignmentId(int assignmentId) throws SomethingWentWrongException;
 
     void gradeAssignment(Student student, Assignment assignment, int score) throws SomethingWentWrongException, NoRecordFoundException;
 
-    List<Discussion> getDiscussionsByCourse(Course course);
+    List<Discussion> getDiscussionsByCourseId(int courseId)throws SomethingWentWrongException;
 
-    void createDiscussion(Discussion discussion, Course course) throws SomethingWentWrongException;
+    void createDiscussion(Discussion discussion, int courseId) throws SomethingWentWrongException;
 
-    void updateDiscussion(Discussion discussion) throws SomethingWentWrongException, NoRecordFoundException;
+    void updateDiscussion(int discussionId) throws SomethingWentWrongException, NoRecordFoundException;
 
-    void deleteDiscussion(Discussion discussion) throws SomethingWentWrongException, NoRecordFoundException;
+    void deleteDiscussion(int discussionId ) throws SomethingWentWrongException, NoRecordFoundException;
 
 //    List<DiscussionPost> getDiscussionPostsByDiscussion(Discussion discussion);
 //

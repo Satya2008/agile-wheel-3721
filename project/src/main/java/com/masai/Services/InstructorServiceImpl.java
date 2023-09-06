@@ -15,20 +15,24 @@ import com.masai.Exceptions.NoRecordFoundException;
 import com.masai.Exceptions.SomethingWentWrongException;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.PersistenceException;
 import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
 
-public class InstructorServiceImpl implements IInstructorService {
-
+public  class InstructorServiceImpl implements IInstructorService {
+    static IInstructorDao ins = new InstructorDaoImpl();
 	@Override
 	public void register(Instructor instructor) throws SomethingWentWrongException {
 		IInstructorDao ins = new InstructorDaoImpl();
 		ins.register(instructor);
 		
 	}
-
+	
+	@Override
+	public void updateCourse(Course course, int courseId, int instructorId)
+			throws SomethingWentWrongException, NoRecordFoundException {
+		ins.updateCourse(course, courseId, instructorId);
+		
+	}
+	
 	@Override
 	public Instructor login(String username, String password) throws NoRecordFoundException {
 		IInstructorDao ins = new InstructorDaoImpl();
@@ -36,51 +40,21 @@ public class InstructorServiceImpl implements IInstructorService {
 	}
 
 	@Override
-	public List<Course> getCoursesByInstructor(Instructor instructor) {
+	public List<Course> getCoursesByInstructorId(int instructorId) throws SomethingWentWrongException {
 		IInstructorDao ins = new InstructorDaoImpl();
-		return ins.getCoursesByInstructor(instructor);
+		return ins.getCoursesByInstructorId(instructorId);
 	}
 
-	public Instructor getInstructorByName(String name) throws SomethingWentWrongException {
-	    EntityManager em = Utils.getEntityManager();
 
-	    try {
-	        TypedQuery<Instructor> query = em.createQuery("SELECT i FROM Instructor i WHERE i.name = :name", Instructor.class);
-	        query.setParameter("name", name);
-	        return query.getSingleResult();
-	    } catch (NoResultException e) {
-	        return null; // Instructor not found
-	    } catch (PersistenceException e) {
-	        throw new SomethingWentWrongException("Failed to retrieve instructor by name");
-	    } finally {
-	        em.close();
-	    }
-	}
+
+
+
+
 	@Override
-	public void createCourse(Course course) throws SomethingWentWrongException {
+	public void deleteCourse(int courseId) throws SomethingWentWrongException, NoRecordFoundException {
 		IInstructorDao ins = new InstructorDaoImpl();
-		ins.createCourse(course);
+		ins.deleteCourse(courseId);
 		
-	}
-	@Override
-	public void updateCourse(Course course, int instructorId)
-			throws SomethingWentWrongException, NoRecordFoundException {
-		IInstructorDao ins = new InstructorDaoImpl();
-		ins.updateCourse(course);
-		System.out.println("Updated successfully!..");
-		
-	}
-
-	@Override
-	public void deleteCourse(Course course) throws SomethingWentWrongException, NoRecordFoundException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public List<Assignment> getAssignmentsByCourse(Course course) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	
@@ -92,27 +66,38 @@ public class InstructorServiceImpl implements IInstructorService {
 	    }
 	
 	@Override
-	public void createAssignment(Assignment assignment, Course course) throws SomethingWentWrongException {
+	public void createAssignment(Assignment assignment, int courseId, int studentId) throws SomethingWentWrongException {
 		IInstructorDao ins = new InstructorDaoImpl();
-		ins.createAssignment(assignment, course);
+		ins.createAssignment(assignment, courseId, studentId);
 		
 		
 	}
 
 	@Override
-	public void updateAssignment(Assignment assignment) throws SomethingWentWrongException, NoRecordFoundException {
-		// TODO Auto-generated method stub
+	public void createCourse(Course course, int instructorId) throws SomethingWentWrongException {
+		ins.createCourse(course, instructorId);
 		
 	}
 
 	@Override
-	public void deleteAssignment(Assignment assignment) throws SomethingWentWrongException, NoRecordFoundException {
-		// TODO Auto-generated method stub
+	public List<Assignment> getAssignmentsByCourseId(int courseId) throws SomethingWentWrongException {
+		return ins.getAssignmentsByCourseId(courseId);
+	}
+
+	@Override
+	public void updateAssignment(Assignment assignment, int assignmentId, int courseId, int studentId) throws SomethingWentWrongException, NoRecordFoundException {
+	
+		ins.updateAssignment(assignment, assignmentId, courseId, studentId);
+	}
+
+	@Override
+	public void deleteAssignment(int assignmentId) throws SomethingWentWrongException, NoRecordFoundException {
+		ins.deleteAssignment(assignmentId);
 		
 	}
 
 	@Override
-	public List<Grade> getGradesByAssignment(Assignment assignment) {
+	public List<Grade> getGradesByAssignmentId(int assignmentId) throws SomethingWentWrongException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -125,25 +110,25 @@ public class InstructorServiceImpl implements IInstructorService {
 	}
 
 	@Override
-	public List<Discussion> getDiscussionsByCourse(Course course) {
+	public List<Discussion> getDiscussionsByCourseId(int courseId) throws SomethingWentWrongException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void createDiscussion(Discussion discussion, Course course) throws SomethingWentWrongException {
+	public void createDiscussion(Discussion discussion, int courseId) throws SomethingWentWrongException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void updateDiscussion(Discussion discussion) throws SomethingWentWrongException, NoRecordFoundException {
+	public void updateDiscussion(int discussionId) throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void deleteDiscussion(Discussion discussion) throws SomethingWentWrongException, NoRecordFoundException {
+	public void deleteDiscussion(int discussionId) throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		
 	}
@@ -154,7 +139,12 @@ public class InstructorServiceImpl implements IInstructorService {
 		
 	}
 
-	
+
+
+
+
+
+
 
 	
 }

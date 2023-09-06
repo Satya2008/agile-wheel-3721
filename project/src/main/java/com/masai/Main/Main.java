@@ -2,6 +2,7 @@ package com.masai.Main;
 
 import java.util.Scanner;
 
+import com.masai.Entities.Course;
 import com.masai.Services.IInstructorService;
 import com.masai.Services.InstructorServiceImpl;
 import com.masai.UI.InstructorUI;
@@ -78,6 +79,11 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
+		
+		
+		
+		
+		
 		Scanner sc = new Scanner(System.in);
 		int choice;
 		do {

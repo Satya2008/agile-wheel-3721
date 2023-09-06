@@ -4,6 +4,7 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,7 +32,7 @@ public class Course {
     @ManyToMany(mappedBy = "courses")
     private List<Student> students;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Assignment> assignments;
     
     @OneToMany(mappedBy = "course")
@@ -107,9 +108,7 @@ public class Course {
         this.quizzes = quizzes;
     }
 
-    @Override
-    public String toString() {
-        return "Course [id=" + id + ", name=" + name + ", instructor=" + instructor + ", students=" + students
-                + ", assignments=" + assignments + ", lessons=" + lessons + ", quizzes=" + quizzes + "]";
-    }
+	
+
+   
 }

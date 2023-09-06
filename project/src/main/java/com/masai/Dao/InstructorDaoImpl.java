@@ -21,181 +21,304 @@ import jakarta.persistence.Query;
 
 public class InstructorDaoImpl implements IInstructorDao {
 
-	 @Override
-	    public void register(Instructor instructor) throws SomethingWentWrongException {
-	        EntityManager em = Utils.getEntityManager();
-
-	        try {
-	            em.getTransaction().begin();
-	            em.persist(instructor);
-	            em.getTransaction().commit();
-	        } catch (PersistenceException e) {
-	            em.getTransaction().rollback();
-	            throw new SomethingWentWrongException("Failed to register instructor");
-	        } finally {
-	            em.close();
-	        }
-	    }
-
-	  @Override
-	    public Instructor login(String username, String password) throws NoRecordFoundException {
-	        EntityManager em = Utils.getEntityManager();
-
-	        try {
-	            Query query = em.createQuery("SELECT i FROM Instructor i WHERE i.username = :username AND i.password = :password");
-	            query.setParameter("username", username);
-	            query.setParameter("password", password);
-	            return (Instructor) query.getSingleResult();
-	        } catch (NoResultException e) {
-	            throw new NoRecordFoundException("Invalid username or password");
-	        } finally {
-	            em.close();
-	        }
-	    }
-
-
-	  @Override
-	    public List<Course> getCoursesByInstructor(Instructor instructor) {
-	        EntityManager em = Utils.getEntityManager();
-        List<Course> list = new ArrayList<>();
-	        try {
-	          Query query = em.createQuery("SELECT c FROM Course c WHERE c.instructor = :instructor");
-	            query.setParameter("instructor", instructor);
-	            list =  query.getResultList();
-	        } catch(PersistenceException e) {
-	        	e.getMessage();
-	        }
-	        finally {
-	            em.close();
-	        }
-			return list;
-	    }
-	  public Instructor getInstructorByName(String instructorName) {
-	        // Implement the logic to retrieve the instructor by name from your data source (e.g., database)
-
-	        // Example implementation using Hibernate's EntityManager
-	        EntityManager entityManager = Utils.getEntityManager();
-            Query query = entityManager.createQuery("SELECT i FROM Instructor i WHERE i.name = :name");
-	        query.setParameter("name", instructorName);
-
-	        try {
-	            return (Instructor) query.getSingleResult();
-	        } catch (NoResultException e) {
-	            return null; // Return null if the instructor is not found
-	        }
-	    }
-	  @Override
-	  public void createCourse(Course course) throws SomethingWentWrongException {
-	      EntityManager em = Utils.getEntityManager();
-	      EntityTransaction et = em.getTransaction();
-	      try {
-	          et.begin();
-
-	          // Retrieve the instructor by name
-	          String instructorName = course.getInstructor().getName();
-	          Query query = em.createQuery("SELECT i FROM Instructor i WHERE i.name = :name");
-	          query.setParameter("name", instructorName);
-	          Instructor instructor = (Instructor) query.getSingleResult();
-
-	          // Set the instructor for the course
-	          course.setInstructor(instructor);
-
-	          // Persist the course
-	          em.persist(course);
-
-	          et.commit();
-	      } catch (PersistenceException e) {
-	          et.rollback(); // Rollback the transaction in case of an exception
-	          e.printStackTrace();
-	          throw new SomethingWentWrongException("Failed to create course");
-	      } finally {
-	          em.close();
-	      }
-	  }
-
-
-
-	  @Override
-	  public void updateCourse(Course course, int instructorId) throws SomethingWentWrongException, NoRecordFoundException {
-	      EntityManager em = Utils.getEntityManager();
-	      EntityTransaction et = em.getTransaction();
-
-	      try {
-	          et.begin();
-
-	          // Check if the course exists in the database
-	          Course existingCourse = em.find(Course.class, course.getId());
-	          if (existingCourse == null) {
-	              throw new NoRecordFoundException("Course not found");
-	          }
-	          Instructor existingIns = em.find(Instructor.class, instructorId);
-	          if (existingIns == null) {
-	              throw new NoRecordFoundException("Instructor not found");
-	          }
-
-	          // Update the course properties
-	          existingCourse.setName(course.getName());
-	          existingCourse.setInstructor(existingIns);
-	          et.commit();
-	      } catch (NoRecordFoundException e) {
-	          et.rollback();
-	          throw e;
-	      } catch (Exception e) {
-	          et.rollback();
-	          throw new SomethingWentWrongException("Failed to update the course");
-	      } finally {
-	          em.close();
-	      }
-	  }
-
-
 	@Override
-	public void deleteCourse(Course course) throws SomethingWentWrongException, NoRecordFoundException {
-		// TODO Auto-generated method stub
-		
+	public void register(Instructor instructor) throws SomethingWentWrongException {
+		EntityManager em = Utils.getEntityManager();
+
+		try {
+			em.getTransaction().begin();
+			em.persist(instructor);
+			em.getTransaction().commit();
+		} catch (PersistenceException e) {
+			em.getTransaction().rollback();
+			throw new SomethingWentWrongException("Failed to register instructor");
+		} finally {
+			em.close();
+		}
 	}
 
 	@Override
-	public List<Assignment> getAssignmentsByCourse(Course course) {
-		// TODO Auto-generated method stub
+	public Instructor login(String username, String password) throws NoRecordFoundException {
+		EntityManager em = Utils.getEntityManager();
+
+		try {
+			Query query = em
+					.createQuery("SELECT i FROM Instructor i WHERE i.username = :username AND i.password = :password");
+			query.setParameter("username", username);
+			query.setParameter("password", password);
+			return (Instructor) query.getSingleResult();
+		} catch (NoResultException e) {
+			throw new NoRecordFoundException("Invalid username or password");
+		} finally {
+			em.close();
+		}
+	}
+
+	@Override
+	public List<Course> getCoursesByInstructorId(int instructorId) throws SomethingWentWrongException {
+		EntityManager em = Utils.getEntityManager();
+		List<Course> list = new ArrayList<>();
+		try {
+			Query query = em.createQuery("SELECT c FROM Course c WHERE c.instructor.id = :instructorId");
+			query.setParameter("instructorId", instructorId);
+			list = query.getResultList();
+		} catch (PersistenceException e) {
+			throw new SomethingWentWrongException("An error occurred while fetching courses by instructor ID");
+		} finally {
+			em.close();
+		}
+		return list;
+	}
+
+	public Instructor getInstructorByName(String instructorName) {
 		return null;
 	}
 
 	@Override
-	public void createAssignment(Assignment assignment, Course course) throws SomethingWentWrongException {
+	public void createCourse(Course course, int instructorId) throws SomethingWentWrongException {
+		EntityManager em = Utils.getEntityManager();
+		EntityTransaction et = em.getTransaction();
 
-		 EntityManager em= Utils.getEntityManager();
-		 EntityTransaction et= em.getTransaction();
 		try {
-		       
-		        assignment.setCourse(course);
+			et.begin();
+			Instructor instructor = em.find(Instructor.class, instructorId);
+			if (instructor == null) {
+				throw new NoRecordFoundException("Instructor with ID " + instructorId + " not found");
+			}
+			course.setInstructor(instructor);
 
-		        		et.begin();
-		        em.persist(assignment);
-		        et.commit();
+			em.persist(course);
+			et.commit();
 
-		        System.out.println("Assignment created successfully.");
-		    } catch (Exception e) {
-		        throw new SomethingWentWrongException("Failed to create the assignment.");
-		    }
-
-		
+		} catch (NoRecordFoundException e) {
+			et.rollback();
+			throw new SomethingWentWrongException("Error in createCourse method: " + e.getMessage());
+		} catch (PersistenceException e) {
+			et.rollback();
+			e.printStackTrace();
+			throw new SomethingWentWrongException("Failed to create course: " + e.getMessage());
+		} finally {
+			if (em != null && em.isOpen()) {
+				em.close();
+			}
+		}
 	}
 
 	@Override
-	public void updateAssignment(Assignment assignment) throws SomethingWentWrongException, NoRecordFoundException {
-		// TODO Auto-generated method stub
-		
+	public void updateCourse(Course course, int courseId, int instructorId)
+			throws SomethingWentWrongException, NoRecordFoundException {
+		EntityManager em = Utils.getEntityManager();
+		EntityTransaction et = em.getTransaction();
+
+		try {
+			et.begin();
+			Course existingCourse = em.find(Course.class, courseId);
+			if (existingCourse == null) {
+				throw new NoRecordFoundException("Course not found");
+			}
+
+			Instructor existingInstructor = em.find(Instructor.class, instructorId);
+			if (existingInstructor == null) {
+				throw new NoRecordFoundException("Instructor not found");
+			}
+			existingCourse.setName(course.getName());
+			existingCourse.setInstructor(existingInstructor);
+			et.commit();
+		} catch (NoRecordFoundException e) {
+			et.rollback();
+			throw e;
+		} catch (Exception e) {
+			et.rollback();
+			throw new SomethingWentWrongException("Failed to update the course");
+		} finally {
+			em.close();
+		}
 	}
 
 	@Override
-	public void deleteAssignment(Assignment assignment) throws SomethingWentWrongException, NoRecordFoundException {
-		// TODO Auto-generated method stub
-		
+	public void deleteCourse(int courseId) throws SomethingWentWrongException, NoRecordFoundException {
+		EntityManager em = Utils.getEntityManager();
+		EntityTransaction et = null;
+
+		try {
+			et = em.getTransaction();
+			et.begin();
+
+			Course existingCourse = em.find(Course.class, courseId);
+
+			if (existingCourse == null) {
+				throw new NoRecordFoundException("Course not found");
+			}
+
+			System.out.println("Deleting course: " + existingCourse.getName());
+
+			em.remove(existingCourse);
+			em.flush();
+
+			et.commit();
+		} catch (NoRecordFoundException e) {
+			if (et != null && et.isActive()) {
+				System.out.println("rollback1");
+				et.rollback();
+			}
+			throw e;
+		} catch (Exception e) {
+			if (et != null && et.isActive()) {
+				System.out.println("rollback2");
+				et.rollback();
+
+			}
+			throw new SomethingWentWrongException("Failed to delete the course"); // Include the exception as a cause
+		} finally {
+			if (em != null && em.isOpen()) {
+				em.close();
+			}
+		}
 	}
 
 	@Override
-	public List<Grade> getGradesByAssignment(Assignment assignment) {
+	public void createAssignment(Assignment assignment, int courseId, int studentId)
+			throws SomethingWentWrongException {
+		EntityManager em = Utils.getEntityManager();
+		EntityTransaction et = em.getTransaction();
+
+		try {
+			et.begin();
+			Course course = em.find(Course.class, courseId);
+
+			if (course == null) {
+				throw new NoRecordFoundException("Course not found");
+			}
+
+			Student student = em.find(Student.class, studentId);
+
+			if (student == null) {
+				throw new NoRecordFoundException("Student not found");
+			}
+
+			assignment.setCourse(course);
+			assignment.setStudent(student);
+			em.persist(assignment);
+			et.commit();
+
+//			System.out.println("Assignment created successfully.");
+		} catch (NoRecordFoundException e) {
+			et.rollback();
+			throw new SomethingWentWrongException("No Record found");
+		} catch (Exception e) {
+			et.rollback();
+			throw new SomethingWentWrongException("Failed to create the assignment.");
+		} finally {
+			if (em != null && em.isOpen()) {
+				em.close();
+			}
+		}
+	}
+	@Override
+	public List<Assignment> getAssignmentsByCourseId(int courseId) throws SomethingWentWrongException {
+	    EntityManager em = Utils.getEntityManager();
+
+	    try {
+	        Course course = em.find(Course.class, courseId);
+
+	        if (course == null) {
+	            throw new SomethingWentWrongException("Course not found for ID: " + courseId);
+	        }
+
+	        List<Assignment> assignments = course.getAssignments();
+
+	        if (assignments == null) {
+	            throw new SomethingWentWrongException("No assignments found for course ID: " + courseId);
+	        }
+
+	        // Log courseId and the number of assignments retrieved
+	        System.out.println("Course ID: " + courseId);
+	        System.out.println("Number of assignments: " + assignments.size());
+
+	        return assignments;
+	    } catch (Exception e) {
+	        throw new SomethingWentWrongException("Failed to retrieve assignments by course ID");
+	    } finally {
+	        em.close();
+	    }
+	}
+
+
+	
+	
+	
+
+	@Override
+	public void updateAssignment(Assignment assignment, int assignmentId, int courseId, int studentId)
+	        throws SomethingWentWrongException, NoRecordFoundException {
+	    EntityManager em = Utils.getEntityManager();
+	    EntityTransaction et = em.getTransaction();
+
+	    try {
+	        et.begin();
+
+	        // Check if the assignment exists and belongs to the specified student and course
+	        Assignment existingAssignment = em.find(Assignment.class, assignmentId);
+	        if (existingAssignment == null) {
+	            throw new NoRecordFoundException("Assignment not found");
+	        }
+	        
+	        Student existingStudent = em.find(Student.class, studentId);
+	        if (existingStudent == null) {
+	            throw new NoRecordFoundException("Student not found");
+	        }
+
+	        Course existingCourse = em.find(Course.class, courseId);
+	        if (existingCourse == null) {
+	            throw new NoRecordFoundException("Course not found");
+	        }
+
+	        // Ensure that the assignment belongs to the specified student and course
+	        if (!existingAssignment.getStudent().equals(existingStudent) || !existingAssignment.getCourse().equals(existingCourse)) {
+	            throw new NoRecordFoundException("Assignment does not belong to the specified student and course");
+	        }
+
+	        // Update the assignment properties
+	        existingAssignment.setName(assignment.getName());
+	        
+	        et.commit();
+	    } catch (NoRecordFoundException e) {
+	        et.rollback();
+	        throw e;
+	    } catch (Exception e) {
+	        et.rollback();
+	        throw new SomethingWentWrongException("Failed to update the assignment");
+	    } finally {
+	        em.close();
+	    }
+	}
+
+	@Override
+	public void deleteAssignment(int assignmentId) throws SomethingWentWrongException, NoRecordFoundException {
+		EntityManager em = Utils.getEntityManager();
+		EntityTransaction et = em.getTransaction();
+
+		try {
+			et.begin();
+			Assignment existingAssignment = em.find(Assignment.class, assignmentId);
+			if (existingAssignment == null) {
+				throw new NoRecordFoundException("Assignment not found");
+			}
+			em.remove(existingAssignment);
+			et.commit();
+		} catch (NoRecordFoundException e) {
+			et.rollback();
+			throw e;
+		} catch (Exception e) {
+			et.rollback();
+			throw new SomethingWentWrongException("Failed to delete the assignment");
+		} finally {
+			em.close();
+		}
+	}
+
+	@Override
+	public List<Grade> getGradesByAssignmentId(int assignmentId) throws SomethingWentWrongException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -204,47 +327,37 @@ public class InstructorDaoImpl implements IInstructorDao {
 	public void gradeAssignment(Student student, Assignment assignment, int score)
 			throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public List<Discussion> getDiscussionsByCourse(Course course) {
+	public List<Discussion> getDiscussionsByCourseId(int courseId) throws SomethingWentWrongException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void createDiscussion(Discussion discussion, Course course) throws SomethingWentWrongException {
+	public void createDiscussion(Discussion discussion, int courseId) throws SomethingWentWrongException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void updateDiscussion(Discussion discussion) throws SomethingWentWrongException, NoRecordFoundException {
+	public void updateDiscussion(int discussionId) throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void deleteDiscussion(Discussion discussion) throws SomethingWentWrongException, NoRecordFoundException {
+	public void deleteDiscussion(int discussionId) throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void logout() {
 		// TODO Auto-generated method stub
-		
+
 	}
-
-	@Override
-	public void updateCourse(Course course) throws SomethingWentWrongException, NoRecordFoundException {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
 
 }
