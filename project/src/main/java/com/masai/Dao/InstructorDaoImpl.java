@@ -257,7 +257,7 @@ public class InstructorDaoImpl implements IInstructorDao {
 	    try {
 	        et.begin();
 
-	        // Check if the assignment exists and belongs to the specified student and course
+	
 	        Assignment existingAssignment = em.find(Assignment.class, assignmentId);
 	        if (existingAssignment == null) {
 	            throw new NoRecordFoundException("Assignment not found");
@@ -273,12 +273,11 @@ public class InstructorDaoImpl implements IInstructorDao {
 	            throw new NoRecordFoundException("Course not found");
 	        }
 
-	        // Ensure that the assignment belongs to the specified student and course
 	        if (!existingAssignment.getStudent().equals(existingStudent) || !existingAssignment.getCourse().equals(existingCourse)) {
 	            throw new NoRecordFoundException("Assignment does not belong to the specified student and course");
 	        }
 
-	        // Update the assignment properties
+	  
 	        existingAssignment.setName(assignment.getName());
 	        
 	        et.commit();

@@ -188,12 +188,12 @@ public class InstructorUI {
 	 public static void deleteAssignment(Scanner scanner) {
 		    IInstructorService instructorService = new InstructorServiceImpl();
 
-		    // Prompt the user to enter the assignment ID they want to delete
+		    
 		    System.out.println("Enter the Assignment ID to delete:");
 		    int assignmentId = scanner.nextInt();
 
 		    try {
-		        // Call the deleteAssignment method to delete the assignment
+	
 		        instructorService.deleteAssignment(assignmentId);
 		        System.out.println("Assignment deleted successfully.");
 		        System.out.println("Deleted Assignment ID: " + assignmentId);
@@ -204,7 +204,7 @@ public class InstructorUI {
 	 public static void updateAssignment(Scanner scanner) {
 		    IInstructorService instructorService = new InstructorServiceImpl();
 
-		    // Prompt the user to enter the assignment ID they want to update
+		
 		    System.out.println("Enter the Assignment ID to update:");
 		    int assignmentId = scanner.nextInt();
 
@@ -221,13 +221,13 @@ public class InstructorUI {
 		        Assignment assignment = new Assignment();
 		        assignment.setName(newAssName);
 
-		        // Set the student and course for the assignment
+		    
 		        Student student = new Student();
 		        student.setId(studentId);
 		        assignment.setStudent(student);
 
 
-		        // Call the updateAssignment method to update the assignment
+		     
 		        instructorService.updateAssignment(assignment, assignmentId, courseId, studentId);
 		        System.out.println("Assignment updated successfully.");
 		    } catch (SomethingWentWrongException | NoRecordFoundException e) {

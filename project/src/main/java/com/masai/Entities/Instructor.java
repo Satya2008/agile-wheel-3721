@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import org.mindrot.jbcrypt.BCrypt;
 
 @Entity
 @Table(name = "instructor")
@@ -73,7 +74,7 @@ public class Instructor {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = BCrypt.hashpw(password, BCrypt.gensalt());
 	}
 
 	public String getName() {
