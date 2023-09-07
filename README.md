@@ -70,6 +70,10 @@ Log in to the student account using the registered username and password.
 Browse and enroll in available courses.--------------------------------------------------------------
 
 
+![Screenshot](https://github.com/Satya2008/agile-wheel-3721/raw/main/image/OLMSYSTEM.png)
+
+
+
 Access course materials, including lectures, readings, videos, and assignments.
 
 Submit assignments and track their progress.
