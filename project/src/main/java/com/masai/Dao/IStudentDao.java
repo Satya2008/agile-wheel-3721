@@ -14,7 +14,7 @@ public interface IStudentDao {
 
 	
 	
-	    void singUp(Student student) throws SomethingWentWrongException;
+	    void signUp(Student student) throws SomethingWentWrongException;
 	    Student login(String username, String password) throws NoRecordFoundException;
 	   
 	    void accessAssignments(Student loggedInStudent);

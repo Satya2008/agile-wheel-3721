@@ -18,7 +18,7 @@ public class StudentServiceImpl implements IStudentService {
 	public void singUp(Student student) throws SomethingWentWrongException {
 
 		IStudentDao st = new StudentsDaoImpl();
-		st.singUp(student);
+		st.signUp(student);
 
 	}
 
