@@ -3,6 +3,8 @@ package com.masai.Entities;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -53,7 +55,7 @@ public class Student {
     private int lectureAccessCount;
     
     @Column(name = "reading_access_count")
-    private int readingAccessCount;
+    private int readingAccessCount=0;
     
     @Column(name = "video_access_count")
     private int videoAccessCount;
@@ -112,8 +114,14 @@ public class Student {
     }
 
     public void setPassword(String password) {
-        this.password = password;
-    }
+		this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+	}
+    
+	 public boolean checkPassword(String enteredPassword) {
+	        // Check if the entered password matches the hashed password
+	        return BCrypt.checkpw(enteredPassword, this.password);
+	    }
+	
 
     public String getName() {
         return name;

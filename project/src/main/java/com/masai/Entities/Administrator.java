@@ -1,5 +1,7 @@
 package com.masai.Entities;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -50,8 +52,14 @@ public class Administrator {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = BCrypt.hashpw(password, BCrypt.gensalt());
 	}
+    
+	 public boolean checkPassword(String enteredPassword) {
+	        // Check if the entered password matches the hashed password
+	        return BCrypt.checkpw(enteredPassword, this.password);
+	    }
+	
    
 	@Override
 	public String toString() {

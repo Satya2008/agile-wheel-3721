@@ -5,6 +5,8 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,6 +24,9 @@ public class Assignment {
 
     @Column(nullable = false)
     private String name;
+    
+    @Enumerated(EnumType.STRING)
+    private AssignmentStatus assignmentStatus;
 
     @ManyToOne
     @JoinColumn(name = "course_id")
@@ -37,6 +42,14 @@ public class Assignment {
 
 	public void setStudent(Student student) {
 		this.student = student;
+	}
+
+	public AssignmentStatus getAssignmentStatus() {
+		return assignmentStatus;
+	}
+
+	public void setAssignmentStatus(AssignmentStatus assignmentStatus) {
+		this.assignmentStatus = assignmentStatus;
 	}
 
 	@OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL)

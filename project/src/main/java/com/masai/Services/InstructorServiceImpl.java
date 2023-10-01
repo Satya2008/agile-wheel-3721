@@ -139,6 +139,13 @@ public  class InstructorServiceImpl implements IInstructorService {
 		
 	}
 
+	@Override
+	public void enrollCourseToStudent(int courseId, int studentId) throws NoRecordFoundException {
+		IInstructorDao ins = new InstructorDaoImpl();
+		 ins.enrollCourseToStudent(courseId, studentId);
+		
+	}
+
 
 
 

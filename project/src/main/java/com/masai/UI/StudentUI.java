@@ -1,12 +1,8 @@
 package com.masai.UI;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Scanner;
 
-import com.masai.Entities.Course;
-import com.masai.Entities.Discussion;
-import com.masai.Entities.Grade;
 import com.masai.Entities.Student;
 import com.masai.Exceptions.NoRecordFoundException;
 import com.masai.Exceptions.SomethingWentWrongException;
@@ -43,6 +39,9 @@ public class StudentUI {
 		}
 
 	}
+	   
+	   
+	   
 	   public static void logIn(Scanner sc) {
 	        System.out.println("Enter username");
 	        String username = sc.next();
@@ -57,6 +56,77 @@ public class StudentUI {
 	            System.out.println(e.getMessage());
 	        }
 	    }
+	   static void submitAssignment(Scanner sc) {
+		   System.out.println("Enter Student ID");
+		   int studentid = sc.nextInt();
+	
+		   System.out.println("Enter Assignment ID");
+		   int assignmentId = sc.nextInt();
+		   IStudentService st = new StudentServiceImpl();
+		    try {
+				st.submitAssignments(studentid, assignmentId);
+				
+			} catch (SomethingWentWrongException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+			}
+		   
+		   
+	   }
+	   
+	   static void accessLecture(Scanner sc) {
+		   System.out.println("Enter Student username");
+		   String username = sc.next();
+	
+		   System.out.println("Enter Student Password");
+		   String password = sc.next();
+		   IStudentService st = new StudentServiceImpl();
+		    try {
+				st.accessLectures(username, password);
+				
+			} catch (SomethingWentWrongException | NoRecordFoundException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+			}
+		   
+		   
+	   }
+
+		static void accessVideo(Scanner sc) {
+			System.out.println("Enter Student username");
+			String username = sc.next();
+
+			System.out.println("Enter Student Password");
+			String password = sc.next();
+			IStudentService st = new StudentServiceImpl();
+			try {
+				st.accessVideos(username, password);
+
+			} catch (SomethingWentWrongException e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+			}
+
+		}
+		
+		 static void accessReading(Scanner sc) {
+			   System.out.println("Enter Student username");
+			   String username = sc.next();
+		
+			   System.out.println("Enter Student Password");
+			   String password = sc.next();
+			   IStudentService st = new StudentServiceImpl();
+			    try {
+					st.accessReadings(username, password);
+					
+				} catch (SomethingWentWrongException e) {
+					// TODO Auto-generated catch block
+					System.out.println(e.getMessage());
+				}
+			   
+			   
+		   }
+		
 	   static void StudentMenuAfterLogIn(Scanner scanner) {
 		    System.out.println("--- Student Menu ---");
 		    System.out.println("1. Access Assignments");
@@ -81,32 +151,19 @@ public class StudentUI {
 		            studentService.accessAssignments(loggedInStudent);
 		            break;
 		        case 2:
-//		            studentService.submitAssignment();
+		          submitAssignment(scanner);
 		            break;
 		        case 3:
 //		            studentService.trackProgress();
 		            break;
 		        case 4:
-		            try {
-		                studentService.accessLectures(loggedInStudent.getUsername(), loggedInStudent.getPassword());
-		               System.out.println("Congratulation "+ loggedInStudent.getName()+ ", You have accessed lecture !"); 
-		            } catch (SomethingWentWrongException | NoRecordFoundException e) {
-		                System.out.println(e.getMessage());
-		            }
+		           accessLecture(scanner);
 		            break;
 		        case 5:
-		            try {
-		                studentService.accessReadings(loggedInStudent.getUsername(), loggedInStudent.getPassword());
-		            } catch (SomethingWentWrongException e) {
-		                System.out.println(e.getMessage());
-		            }
+		           accessReading(scanner);
 		            break;
 		        case 6:
-		            try {
-		                studentService.accessVideos(loggedInStudent.getUsername(), loggedInStudent.getPassword());
-		            } catch (SomethingWentWrongException e) {
-		                System.out.println(e.getMessage());
-   	            }
+		          accessVideo(scanner);
 		            break;
 		        case 7:
 //		            List<Course> enrolledCourses = studentService.getEnrolledCourses(loggedInStudent);

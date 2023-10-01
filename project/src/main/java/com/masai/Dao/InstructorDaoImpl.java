@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.masai.EMUtils.Utils;
 import com.masai.Entities.Assignment;
+import com.masai.Entities.AssignmentStatus;
 import com.masai.Entities.Course;
-import com.masai.Entities.Discussion;
-import com.masai.Entities.Grade;
+import com.masai.Entities.Enrollment;
 import com.masai.Entities.Instructor;
 import com.masai.Entities.Student;
 import com.masai.Exceptions.NoRecordFoundException;
@@ -55,19 +55,24 @@ public class InstructorDaoImpl implements IInstructorDao {
      */
 	@Override
 	public Instructor login(String username, String password) throws NoRecordFoundException {
-		EntityManager em = Utils.getEntityManager();
+	    EntityManager em = Utils.getEntityManager();
 
-		try {
-			Query query = em
-					.createQuery("SELECT i FROM Instructor i WHERE i.username = :username AND i.password = :password");
-			query.setParameter("username", username);
-			query.setParameter("password", password);
-			return (Instructor) query.getSingleResult();
-		} catch (NoResultException e) {
-			throw new NoRecordFoundException("Invalid username or password");
-		} finally {
-			em.close();
-		}
+	    try {
+	        Query query = em.createQuery("SELECT i FROM Instructor i WHERE i.username = :username");
+	        query.setParameter("username", username);
+	        Instructor instructor = (Instructor) query.getSingleResult();
+
+	        // Check if the entered password matches the stored hashed password
+	        if (instructor.checkPassword(password)) {
+	            return instructor;
+	        } else {
+	            throw new NoRecordFoundException("Invalid username or password");
+	        }
+	    } catch (NoResultException e) {
+	        throw new NoRecordFoundException("Invalid username or password");
+	    } finally {
+	        em.close();
+	    }
 	}
 
 	 /**
@@ -266,6 +271,7 @@ public class InstructorDaoImpl implements IInstructorDao {
 	        // Associate the assignment with the course and student
 	        assignment.setCourse(course);
 	        assignment.setStudent(student);
+	        assignment.setAssignmentStatus(AssignmentStatus.OPEN);
 
 	        // Persist the new assignment in the database
 	        em.persist(assignment);
@@ -421,48 +427,55 @@ public class InstructorDaoImpl implements IInstructorDao {
 	    }
 	}
 
-
 	@Override
-	public List<Grade> getGradesByAssignmentId(int assignmentId) throws SomethingWentWrongException {
-		// TODO Auto-generated method stub
-		return null;
+	public void enrollCourseToStudent(int courseId, int studentId) throws NoRecordFoundException {
+	    EntityManager em = Utils.getEntityManager();
+	    EntityTransaction et = em.getTransaction();
+
+	    try {
+	        et.begin();
+
+	        // Retrieve the student and course objects by their IDs
+	        Student student = em.find(Student.class, studentId);
+	        Course course = em.find(Course.class, courseId);
+
+	        if (student == null || course == null) {
+	            // Handle the case where either the student or course is not found
+	            throw new NoRecordFoundException("Student or Course not found");
+	        }
+
+	        // Create an Enrollment entity to represent the student's enrollment in the course
+	        Enrollment enrollment = new Enrollment();
+	        enrollment.setCourse(course);
+	        enrollment.setStudent(student);
+
+	        // Add the enrollment to the student's list of enrollments
+	        student.getEnrollments().add(enrollment);
+
+	        // Add the course to the student's list of courses
+	        student.getCourses().add(course);
+
+	        // Add the student to the course's list of students
+	        course.getStudents().add(student);
+
+	        // Update the student and course entities in the database
+	        em.merge(student);
+	        em.merge(course);
+
+	        et.commit();
+	        System.out.println("Enrolled Successfully");
+	    } catch (Exception e) {
+	        // Handle exceptions related to database access or other errors
+	        et.rollback();
+	        e.printStackTrace();
+	    } finally {
+	        em.close();
+	    }
 	}
 
-	@Override
-	public void gradeAssignment(Student student, Assignment assignment, int score)
-			throws SomethingWentWrongException, NoRecordFoundException {
-		// TODO Auto-generated method stub
 
-	}
 
-	@Override
-	public List<Discussion> getDiscussionsByCourseId(int courseId) throws SomethingWentWrongException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public void createDiscussion(Discussion discussion, int courseId) throws SomethingWentWrongException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void updateDiscussion(int discussionId) throws SomethingWentWrongException, NoRecordFoundException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void deleteDiscussion(int discussionId) throws SomethingWentWrongException, NoRecordFoundException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void logout() {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 }

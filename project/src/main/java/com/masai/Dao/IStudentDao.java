@@ -18,18 +18,18 @@ public interface IStudentDao {
 	    Student login(String username, String password) throws NoRecordFoundException;
 	   
 	    void accessAssignments(Student loggedInStudent);
-	    void trackProgress();
+//	    void trackProgress();
 	    void accessLectures(String username, String password) throws SomethingWentWrongException, NoRecordFoundException;
 	    void accessReadings(String username, String password)throws SomethingWentWrongException;
 	    void accessVideos(String username, String password)throws SomethingWentWrongException;
-	    void logout();
-	    List<Course> getEnrolledCourses(Student student);
-	    List<Assignment> getAssignmentsByStudent(Student student);
-	    void submitAssignment(Student student, Assignment assignment, String submission);
-	    List<Grade> getGradesByStudent(Student student);
-	    List<Discussion> getDiscussionsByCourse(Course course);
-	    void createDiscussionPost(Student student, Course course, String content);
-	    List<Discussion> getDiscussionPostsByDiscussion(Discussion discussion);
+//	    void logout();
+//	    List<Course> getEnrolledCourses(Student student);
+//	    List<Assignment> getAssignmentsByStudent(Student student);
+	    public void submitAssignments(int studentId, int assignmentId);
+//	    List<Grade> getGradesByStudent(Student student);
+//	    List<Discussion> getDiscussionsByCourse(Course course);
+//	    void createDiscussionPost(Student student, Course course, String content);
+//	    List<Discussion> getDiscussionPostsByDiscussion(Discussion discussion);
 		
 
 		

@@ -76,7 +76,12 @@ public class Instructor {
 	public void setPassword(String password) {
 		this.password = BCrypt.hashpw(password, BCrypt.gensalt());
 	}
-
+    
+	 public boolean checkPassword(String enteredPassword) {
+	        // Check if the entered password matches the hashed password
+	        return BCrypt.checkpw(enteredPassword, this.password);
+	    }
+	
 	public String getName() {
 		return name;
 	}

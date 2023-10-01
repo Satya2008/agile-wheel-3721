@@ -13,39 +13,43 @@ import com.masai.Exceptions.SomethingWentWrongException;
 
 public interface IInstructorDao {
 
-    void register(Instructor instructor) throws SomethingWentWrongException;
+	void register(Instructor instructor) throws SomethingWentWrongException;
 
-    Instructor login(String username, String password) throws NoRecordFoundException;
+	Instructor login(String username, String password) throws NoRecordFoundException;
 
-    List<Course> getCoursesByInstructorId(int instructor)throws SomethingWentWrongException;
-    
+	List<Course> getCoursesByInstructorId(int instructor) throws SomethingWentWrongException;
 
-    void createCourse(Course course, int instructorId) throws SomethingWentWrongException;
+	void createCourse(Course course, int instructorId) throws SomethingWentWrongException;
 
-    void updateCourse(Course course,int courseId ,int instructorId) throws SomethingWentWrongException, NoRecordFoundException;
+	void updateCourse(Course course, int courseId, int instructorId)
+			throws SomethingWentWrongException, NoRecordFoundException;
 
-    void deleteCourse(int couseId) throws SomethingWentWrongException, NoRecordFoundException;
+	void deleteCourse(int couseId) throws SomethingWentWrongException, NoRecordFoundException;
 
-    List<Assignment> getAssignmentsByCourseId(int courseId) throws SomethingWentWrongException;
+	List<Assignment> getAssignmentsByCourseId(int courseId) throws SomethingWentWrongException;
 
-    void createAssignment(Assignment assignment, int courseId, int studentId) throws SomethingWentWrongException;
+	void createAssignment(Assignment assignment, int courseId, int studentId) throws SomethingWentWrongException;
 
+	void updateAssignment(Assignment assignment, int assignmentId, int courseId, int studentId)
+			throws SomethingWentWrongException, NoRecordFoundException;
+
+	void deleteAssignment(int assignmentId) throws SomethingWentWrongException, NoRecordFoundException;
    
-    void updateAssignment(Assignment assignment, int assignmentId, int courseId, int studentId) throws SomethingWentWrongException, NoRecordFoundException;
-    
-    void deleteAssignment(int assignmentId) throws SomethingWentWrongException, NoRecordFoundException;
+	void enrollCourseToStudent(int courseId, int studentId) throws NoRecordFoundException;
+	
+	
+	
+//    List<Grade> getGradesByAssignmentId(int assignmentId) throws SomethingWentWrongException;
 
-    List<Grade> getGradesByAssignmentId(int assignmentId) throws SomethingWentWrongException;
+//    void gradeAssignment(Student student, Assignment assignment, int score) throws SomethingWentWrongException, NoRecordFoundException;
 
-    void gradeAssignment(Student student, Assignment assignment, int score) throws SomethingWentWrongException, NoRecordFoundException;
+//    List<Discussion> getDiscussionsByCourseId(int courseId)throws SomethingWentWrongException;
 
-    List<Discussion> getDiscussionsByCourseId(int courseId)throws SomethingWentWrongException;
-
-    void createDiscussion(Discussion discussion, int courseId) throws SomethingWentWrongException;
-
-    void updateDiscussion(int discussionId) throws SomethingWentWrongException, NoRecordFoundException;
-
-    void deleteDiscussion(int discussionId ) throws SomethingWentWrongException, NoRecordFoundException;
+//    void createDiscussion(Discussion discussion, int courseId) throws SomethingWentWrongException;
+//
+//    void updateDiscussion(int discussionId) throws SomethingWentWrongException, NoRecordFoundException;
+//
+//    void deleteDiscussion(int discussionId ) throws SomethingWentWrongException, NoRecordFoundException;
 
 //    List<DiscussionPost> getDiscussionPostsByDiscussion(Discussion discussion);
 //
@@ -55,9 +59,6 @@ public interface IInstructorDao {
 //
 //    void deleteDiscussionPost(DiscussionPost post) throws SomethingWentWrongException, NoRecordFoundException;
 
-    void logout();
+//    void logout();
 
-	
-
-	
 }

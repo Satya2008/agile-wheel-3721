@@ -32,7 +32,8 @@ public interface IInstructorService {
 
     void createAssignment(Assignment assignment, int courseid, int studentId) throws SomethingWentWrongException;
 
-   
+    void enrollCourseToStudent(int courseId, int studentId) throws NoRecordFoundException;
+    
     void updateAssignment(Assignment assignment, int assignmentId, int courseId, int studentId) throws SomethingWentWrongException, NoRecordFoundException;
     
     void deleteAssignment(int assignmentId) throws SomethingWentWrongException, NoRecordFoundException;

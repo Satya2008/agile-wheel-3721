@@ -3,8 +3,10 @@ package com.masai.Main;
 import java.util.Scanner;
 
 import com.masai.Entities.Course;
+import com.masai.Exceptions.SomethingWentWrongException;
 import com.masai.Services.IInstructorService;
 import com.masai.Services.InstructorServiceImpl;
+import com.masai.UI.AdministratorUI;
 import com.masai.UI.InstructorUI;
 import com.masai.UI.StudentUI;
 
@@ -37,14 +39,22 @@ public class Main {
 	 static void handleAdministratorMenu(Scanner scanner) {
 		System.out.println("--- Administrator Menu ---");
 		System.out.println("1. Log In");
+		System.out.println("2. SignUp");
 		System.out.println("0. Back to Main Menu");
 		System.out.print("Enter your choice: ");
 		int choice = scanner.nextInt();
-		scanner.nextLine(); // Consume the newline character
-
+		scanner.nextLine(); 
+	   
 		switch (choice) {
 		case 1:
-//                administratorLogIn(scanner);
+			
+				AdministratorUI.logIn(scanner);
+			
+			break;
+		case 2:
+			
+				AdministratorUI.signUp(scanner);
+			
 			break;
 		case 0:
 			break;
@@ -61,7 +71,7 @@ public class Main {
 		System.out.println("0. Back to Main Menu");
 		System.out.print("Enter your choice: ");
 		int choice = scanner.nextInt();
-		scanner.nextLine(); // Consume the newline character
+		scanner.nextLine(); 
 
 		switch (choice) {
 		case 1:

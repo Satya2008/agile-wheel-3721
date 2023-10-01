@@ -235,6 +235,26 @@ public class InstructorUI {
 		    }
 		}
 
+	 public static void enrollCourseToStudent(Scanner scanner) {
+		    IInstructorService instructorService = new InstructorServiceImpl();
+
+		
+		 
+
+		    System.out.println("Enter Student Id : ");
+		    int studentId = scanner.nextInt();
+
+		    System.out.println("Enter Course Id : ");
+		    int courseId = scanner.nextInt();
+
+		    try {
+		       instructorService.enrollCourseToStudent(courseId, studentId);
+		      
+		    } catch ( NoRecordFoundException e) {
+		        System.err.println("Error: " + e.getMessage());
+		    }
+		}
+
 
 
 
@@ -251,6 +271,7 @@ public class InstructorUI {
 		        System.out.println("6. Get Assingments");
 		        System.out.println("7. Delete Assignment ");
 		        System.out.println("8. Update Assignment ");
+		        System.out.println("9. Enroll Course To Student ");
 		        
 		        System.out.println("0. Back to Main Menu");
 
@@ -281,6 +302,9 @@ public class InstructorUI {
 		                updateAssignment(sc);
 		                break;
 		            case 9:
+		                enrollCourseToStudent(sc);
+		                break;
+		            case 10:
 		                // Handle other options
 		                break;
 		        }
